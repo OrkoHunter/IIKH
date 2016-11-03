@@ -6,12 +6,11 @@ import java.awt.event.*;
 import java.util.Calendar;
 import java.text.*;
 
-public class EditRecipe {
+public class CreatePlan {
     private JFrame mainFrame;
     private JPanel mainPanel;
     private JPanel topPanel;
     private JPanel bottomPanel;
-    JComboBox<String> nameList;
     JLabel lblIndex;
     JLabel lblName;
     JLabel lblIngredients;
@@ -20,33 +19,25 @@ public class EditRecipe {
     JTextField txtName;
     JTextField txtIngredients;
     JTextArea txtProcedure;
-    JButton btnModify;
+    JButton btnAdd;
+    JButton btnReset;
     JButton btnClose;
 
-    public EditRecipe(Recipes newRecipes) {
-        initGUI(newRecipes);
-        addActionListeners(newRecipes);
+    public CreatePlan(Recipes newRecipes, Plans newPlans) {
+        initGUI(newRecipes, newPlans);
+        addActionListeners(newRecipes, newPlans);
     }
 
-    private void initGUI(Recipes newRecipes) {
-        mainFrame = new JFrame("Edit existing recipes");
+    private void initGUI(Plans newPlans) {
+        mainFrame = new JFrame("Add a new recipe");
         topPanel = new JPanel();
-
-        String[] names = new String[newRecipes.size() + 1];
-        names[0] = "";
-        int i = 1;
-        for (Recipe r: newRecipes.list) {
-            names[i] = r.name;
-            i++;
-        }
-        nameList = new JComboBox<String>(names);
 
         lblIndex = new JLabel("Index : ");
         lblName = new JLabel("Name : ");
         lblIngredients = new JLabel("Ingredients : ");
         lblProcedure = new JLabel("Procedure : ");
 
-        txtIndex = new JTextField();
+        txtIndex = new JTextField(Integer.toString(newRecipes.size() + 1));
         txtIndex.setEditable(false);
         txtName = new JTextField(15);
         txtIngredients = new JTextField(15);
@@ -66,19 +57,20 @@ public class EditRecipe {
         topPanel.setLayout(layout);
         SpringUtilities.makeCompactGrid(topPanel, 4, 2, 5, 5, 5, 5);
 
-        btnModify = new JButton("Modify");
+        btnAdd = new JButton("Add");
+        btnReset = new JButton("Reset");
         btnClose = new JButton("Close");
 
         FlowLayout flowLayout = new FlowLayout();
         bottomPanel = new JPanel();
         bottomPanel.setLayout(flowLayout);
-        bottomPanel.add(btnModify);
+        bottomPanel.add(btnAdd);
+        bottomPanel.add(btnReset);
         bottomPanel.add(btnClose);
 
         mainPanel = new JPanel();
         BoxLayout yBoxLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
         mainPanel.setLayout(yBoxLayout);
-        mainPanel.add(nameList);
         mainPanel.add(topPanel);
         mainPanel.add(bottomPanel);
         mainFrame.add(mainPanel);
@@ -89,25 +81,24 @@ public class EditRecipe {
         mainFrame.setVisible(true);
     }
 
-    private void edit(Recipes newRecipes) {
-        int i = Integer.parseInt(txtIndex.getText()) - 1;
+    private void add(Recipes newRecipes, Plans newPlans) {
         String name = txtName.getText();
         String ingredients = txtIngredients.getText();
         String procedure = txtProcedure.getText();
-        newRecipes.edit(i, name, ingredients, procedure);
+        newRecipes.add(name, ingredients, procedure);
         try {
             FileOutputStream fileOut = new FileOutputStream("recipes.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(newRecipes);
             out.close();
             fileOut.close();
-            System.out.println("Updated Recipe " + name + " data saved in recipes.ser");
+            System.out.println("New Recipe " + name + " data saved in recipes.ser");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
-        JOptionPane.showMessageDialog(mainFrame, "Recipe for " + name + " modified!");
-        close();
+        reset();
+        txtIndex.setText(Integer.toString(newRecipes.size() + 1));
     }
 
     private void reset() {
@@ -121,41 +112,16 @@ public class EditRecipe {
         mainFrame.setVisible(false);
     }
 
-    private void setDisplay(Recipes newRecipes, int index) {
-        txtIndex.setText(Integer.toString(index + 1));
-        txtName.setText(newRecipes.list.get(index).name);
-        txtIngredients.setText(newRecipes.list.get(index).ingredients);
-        txtProcedure.setText(newRecipes.list.get(index).procedure);
-    }
-
-    private void addActionListeners(Recipes newRecipes) {
-        nameList.addActionListener(new ActionListener() {
+    private void addActionListeners(Recipes newRecipes, Plans newPlans) {
+        btnAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JComboBox cb = (JComboBox) e.getSource();
-                int index = (int) cb.getSelectedIndex();
-                if (index == 0) {
-                    reset();
-                    txtIndex.setText("");
-                }
-                else
-                    setDisplay(newRecipes, index - 1);
+                add(newRecipes);
             }
         });
 
-        btnModify.addActionListener(new ActionListener() {
+        btnReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (txtName.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(mainFrame, "Name cannot be empty.",
-                        "Null error", JOptionPane.ERROR_MESSAGE);
-                } else if (txtIngredients.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(mainFrame, "Ingredients cannot be empty.",
-                        "Null error", JOptionPane.ERROR_MESSAGE);
-                } else if (txtProcedure.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(mainFrame, "Procedure cannot be empty.",
-                        "Null error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    edit(newRecipes);
-                }
+                reset();
             }
         });
 

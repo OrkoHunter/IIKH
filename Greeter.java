@@ -23,7 +23,7 @@ public class Greeter {
 
     public Greeter(Recipes newRecipes, Plans newPlans) {
         prepareGUI();
-        addActionListeners(newRecipes);
+        addActionListeners(newRecipes, newPlans);
     }
 
     private void prepareGUI() {
@@ -133,7 +133,7 @@ public class Greeter {
         }).start();
     }
 
-    private void addActionListeners(Recipes newRecipes) {
+    private void addActionListeners(Recipes newRecipes, Plans newPlans) {
         btnAddRecipe.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AddRecipe addRecipe = new AddRecipe(newRecipes);
@@ -149,6 +149,12 @@ public class Greeter {
         btnEditRecipe.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 EditRecipe editRecipe = new EditRecipe(newRecipes);
+            }
+        });
+
+        btnCreatePlan.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CreatePlan createPlan = new CreatePlan(newRecipes, newPlans);
             }
         });
     }
