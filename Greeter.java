@@ -21,7 +21,7 @@ public class Greeter {
     private JButton btnCreatePlan;
     final DateFormat dateFormat = new SimpleDateFormat("E dd-MM-yyyy HH:mm:ss");
 
-    public Greeter(Recipes newRecipes, Plans newPlans) {
+    public Greeter(final Recipes newRecipes, final Plans newPlans) {
         prepareGUI();
         addActionListeners(newRecipes, newPlans);
     }
@@ -120,7 +120,7 @@ public class Greeter {
         bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());
         Calendar now = Calendar.getInstance();
-        JLabel time = new JLabel(dateFormat.format(now.getTime()));
+        final JLabel time = new JLabel(dateFormat.format(now.getTime()));
         time.setBounds(100, 100, 125, 125);
         bottomPanel.add(time);
 
@@ -133,7 +133,7 @@ public class Greeter {
         }).start();
     }
 
-    private void addActionListeners(Recipes newRecipes, Plans newPlans) {
+    private void addActionListeners(final Recipes newRecipes, final Plans newPlans) {
         btnAddRecipe.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 AddRecipe addRecipe = new AddRecipe(newRecipes);
@@ -154,7 +154,21 @@ public class Greeter {
 
         btnCreatePlan.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                CreatePlan createPlan = new CreatePlan(newRecipes, newPlans);
+                /* 0 is for meal plan
+                   1 is for daily plan */
+                int TYPE = 0;
+                Object[] options = {"Meal plan", "Daily plan"};
+                TYPE = JOptionPane.showOptionDialog(null,
+                    "Why type of plan do you want to create?", "Type of Plan",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]
+                    );
+                if (TYPE == 0) {
+                    CreateMealPlan createMealPlan = new CreateMealPlan(newRecipes, newPlans);
+                }
             }
         });
     }
@@ -194,44 +208,6 @@ public class Greeter {
 
 
         Greeter greeter = new Greeter(recipes, plans);
-
-/*
-        try {
-            FileOutputStream fileOut = new FileOutputStream("recipes.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(recipes);
-            out.close();
-            fileOut.close();
-            System.out.println("Recipes data saved in recipes.ser");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-
-        try {
-            FileOutputStream fileOut = new FileOutputStream("plans.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(plans);
-            out.close();
-            fileOut.close();
-            System.out.println("Plans data saved in recipes.ser");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-*/
     }
 
-    public void printOptions() {
-        System.out.println("------------------------------------");
-        System.out.println("Choose one of the following options : ");
-        System.out.println("| 1. Browser the recipe database");
-        System.out.println("| 2. Add a new recipe");
-        System.out.println("| 3. Edit the existing recipe");
-        System.out.println("| 4. Review the existing plan for meal");
-        System.out.println("| 5. Create a new plan for meal");
-        System.out.println("| 6. Exit");
-        System.out.println("------------------------------------");
-        System.out.print("Choice : ");
-    }
 }

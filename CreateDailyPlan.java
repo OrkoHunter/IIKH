@@ -6,7 +6,7 @@ import java.awt.event.*;
 import java.util.Calendar;
 import java.text.*;
 
-public class CreatePlan {
+public class CreateDailyPlan {
     private JFrame mainFrame;
     private JPanel mainPanel;
     private JPanel topPanel;
@@ -23,12 +23,12 @@ public class CreatePlan {
     JButton btnReset;
     JButton btnClose;
 
-    public CreatePlan(Recipes newRecipes, Plans newPlans) {
+    public CreateDailyPlan(final Recipes newRecipes, final Plans newPlans) {
         initGUI(newRecipes, newPlans);
         addActionListeners(newRecipes, newPlans);
     }
 
-    private void initGUI(Plans newPlans) {
+    private void initGUI(final Recipes newRecipes, final Plans newPlans) {
         mainFrame = new JFrame("Add a new recipe");
         topPanel = new JPanel();
 
@@ -81,7 +81,7 @@ public class CreatePlan {
         mainFrame.setVisible(true);
     }
 
-    private void add(Recipes newRecipes, Plans newPlans) {
+    private void add(final Recipes newRecipes, final Plans newPlans) {
         String name = txtName.getText();
         String ingredients = txtIngredients.getText();
         String procedure = txtProcedure.getText();
@@ -112,10 +112,10 @@ public class CreatePlan {
         mainFrame.setVisible(false);
     }
 
-    private void addActionListeners(Recipes newRecipes, Plans newPlans) {
+    private void addActionListeners(final Recipes newRecipes, final Plans newPlans) {
         btnAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                add(newRecipes);
+                add(newRecipes, newPlans);
             }
         });
 

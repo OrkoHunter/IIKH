@@ -24,12 +24,12 @@ public class BrowseRecipe {
     JButton btnReset;
     JButton btnClose;
 
-    public BrowseRecipe(Recipes newRecipes) {
+    public BrowseRecipe(final Recipes newRecipes) {
         initGUI(newRecipes);
         addActionListeners(newRecipes);
     }
 
-    private void initGUI(Recipes newRecipes) {
+    private void initGUI(final Recipes newRecipes) {
         mainFrame = new JFrame("Browse existing recipes");
         topPanel = new JPanel();
 
@@ -104,14 +104,14 @@ public class BrowseRecipe {
         mainFrame.setVisible(false);
     }
 
-    private void setDisplay(Recipes newRecipes, int index) {
+    private void setDisplay(final Recipes newRecipes, int index) {
         txtIndex.setText(Integer.toString(index + 1));
         txtName.setText(newRecipes.list.get(index).name);
         txtIngredients.setText(newRecipes.list.get(index).ingredients);
         txtProcedure.setText(newRecipes.list.get(index).procedure);
     }
 
-    private void addActionListeners(Recipes newRecipes) {
+    private void addActionListeners(final Recipes newRecipes) {
         nameList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox) e.getSource();

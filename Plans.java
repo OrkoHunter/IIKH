@@ -7,7 +7,7 @@ public class Plans implements Serializable {
     public void showMeals() {
         for (dailyPlan d: dailyplans) {
             System.out.println("----------------------------------");
-            System.out.println("For date : " + d.t.toString());
+            System.out.println("For date : " + d.date);
             System.out.println("Recipe Index (Breakfast) : " + Integer.toString(d.recipeIndices[0]));
             System.out.println("Recipe Index (Lunch) : " + Integer.toString(d.recipeIndices[1]));
             System.out.println("Recipe Index (Dinner) : " + Integer.toString(d.recipeIndices[2]));
@@ -15,7 +15,7 @@ public class Plans implements Serializable {
 
         for (mealPlan m : mealplans) {
             System.out.println("----------------------------------");
-            System.out.println("For date : " + m.t.toString());
+            System.out.println("For date : " + m.date);
             if (m.time == 0)
                 System.out.print("For Breakfast, ");
             else if (m.time == 1)
@@ -44,7 +44,7 @@ public class Plans implements Serializable {
             SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
             String input = scanner.nextLine();
             try {
-                meal.t = ft.parse(input);
+                meal.date = input;
                 break;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -66,7 +66,7 @@ public class Plans implements Serializable {
             SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
             String input = scanner.nextLine();
             try {
-                meal.t = ft.parse(input);
+                meal.date = input;
                 break;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -85,17 +85,17 @@ public class Plans implements Serializable {
         System.out.println("2. Plan for a day");
     }
 
-    private ArrayList<dailyPlan> dailyplans = new ArrayList<dailyPlan>();
-    private ArrayList<mealPlan> mealplans = new ArrayList<mealPlan>();
+    public ArrayList<dailyPlan> dailyplans = new ArrayList<dailyPlan>();
+    public ArrayList<mealPlan> mealplans = new ArrayList<mealPlan>();
 }
 
 class dailyPlan implements Serializable {
-    public Date t;
+    public String date;
     public int[] recipeIndices = new int[3];
 }
 
 class mealPlan implements Serializable {
-    public Date t;
+    public String date;
     public int time;  // 0, 1, 2 for Breakfast, Lunch, Dinner
     public int recipeIndex;
 }

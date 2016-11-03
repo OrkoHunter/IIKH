@@ -23,12 +23,12 @@ public class EditRecipe {
     JButton btnModify;
     JButton btnClose;
 
-    public EditRecipe(Recipes newRecipes) {
+    public EditRecipe(final Recipes newRecipes) {
         initGUI(newRecipes);
         addActionListeners(newRecipes);
     }
 
-    private void initGUI(Recipes newRecipes) {
+    private void initGUI(final Recipes newRecipes) {
         mainFrame = new JFrame("Edit existing recipes");
         topPanel = new JPanel();
 
@@ -89,7 +89,7 @@ public class EditRecipe {
         mainFrame.setVisible(true);
     }
 
-    private void edit(Recipes newRecipes) {
+    private void edit(final Recipes newRecipes) {
         int i = Integer.parseInt(txtIndex.getText()) - 1;
         String name = txtName.getText();
         String ingredients = txtIngredients.getText();
@@ -121,14 +121,14 @@ public class EditRecipe {
         mainFrame.setVisible(false);
     }
 
-    private void setDisplay(Recipes newRecipes, int index) {
+    private void setDisplay(final Recipes newRecipes, int index) {
         txtIndex.setText(Integer.toString(index + 1));
         txtName.setText(newRecipes.list.get(index).name);
         txtIngredients.setText(newRecipes.list.get(index).ingredients);
         txtProcedure.setText(newRecipes.list.get(index).procedure);
     }
 
-    private void addActionListeners(Recipes newRecipes) {
+    private void addActionListeners(final Recipes newRecipes) {
         nameList.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox) e.getSource();

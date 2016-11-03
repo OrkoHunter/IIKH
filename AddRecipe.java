@@ -23,12 +23,12 @@ public class AddRecipe {
     JButton btnReset;
     JButton btnClose;
 
-    public AddRecipe(Recipes newRecipes) {
+    public AddRecipe(final Recipes newRecipes) {
         initGUI(newRecipes);
         addActionListeners(newRecipes);
     }
 
-    private void initGUI(Recipes newRecipes) {
+    private void initGUI(final Recipes newRecipes) {
         mainFrame = new JFrame("Add a new recipe");
         topPanel = new JPanel();
 
@@ -81,7 +81,7 @@ public class AddRecipe {
         mainFrame.setVisible(true);
     }
 
-    private void add(Recipes newRecipes) {
+    private void add(final Recipes newRecipes) {
         String name = txtName.getText();
         String ingredients = txtIngredients.getText();
         String procedure = txtProcedure.getText();
@@ -112,7 +112,7 @@ public class AddRecipe {
         mainFrame.setVisible(false);
     }
 
-    private void addActionListeners(Recipes newRecipes) {
+    private void addActionListeners(final Recipes newRecipes) {
         btnAdd.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 add(newRecipes);
