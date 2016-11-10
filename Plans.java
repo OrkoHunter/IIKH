@@ -25,40 +25,18 @@ public class Plans implements Serializable {
             System.out.println("Recipe index is " + Integer.toString(m.recipeIndex));
         }
     }
-    public void createNew() {
-        this.printOptions();
-        Scanner scanner = new Scanner(System.in);
-        int opt = scanner.nextInt();
 
-        if (opt == 1)
-            this.amealPlan();
-        if (opt == 2)
-            this.adailyPlan();
-    }
+    public void amealPlan(String date, int time, int recipeIndex) {
 
-    private void amealPlan() {
-        Scanner scanner = new Scanner(System.in);
         mealPlan meal = new mealPlan();
-        while(true) {
-            System.out.print("Enter date (yyyy-mm-dd) : ");
-            SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-            String input = scanner.nextLine();
-            try {
-                meal.date = input;
-                break;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        System.out.print("Enter 0 for Breakfast, 1 for Lunch and 2 for Dinner : ");
-        meal.time = scanner.nextInt();
-        System.out.print("Enter the recipe index : ");
-        meal.recipeIndex = scanner.nextInt();
+        meal.date = date;
+        meal.time = time;
+        meal.recipeIndex = recipeIndex;
 
         mealplans.add(meal);
     }
 
-    private void adailyPlan() {
+    public void adailyPlan() {
         Scanner scanner = new Scanner(System.in);
         dailyPlan meal = new dailyPlan();
         while(true) {
@@ -78,11 +56,6 @@ public class Plans implements Serializable {
         meal.recipeIndices[2] = scanner.nextInt();
 
         dailyplans.add(meal);
-    }
-
-    private void printOptions() {
-        System.out.println("1. Plan for a meal");
-        System.out.println("2. Plan for a day");
     }
 
     public ArrayList<dailyPlan> dailyplans = new ArrayList<dailyPlan>();

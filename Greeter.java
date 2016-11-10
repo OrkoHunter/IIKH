@@ -171,6 +171,13 @@ public class Greeter {
                 }
             }
         });
+
+        btnReviewPlan.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ReviewMealPlan reviewMealPlan = new ReviewMealPlan(newPlans);
+            }
+        });
+
     }
 
     public static void main(String[] args) {

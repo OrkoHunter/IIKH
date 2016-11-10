@@ -15,10 +15,12 @@ public class CreateMealPlan {
     JTextField txtDate;
     JComboBox<String> txtTime;
     JLabel lblTime;
+    JLabel lblRecipeIndex;
+    JComboBox<String> txtRecipeIndex;
+    JButton btnSave;
 
     public CreateMealPlan(final Recipes newRecipes, final Plans newPlans) {
         initGUI(newRecipes, newPlans);
-        //addActionListeners(newRecipes, newPlans);
     }
 
     private void initGUI(final Recipes newRecipes, final Plans newPlans) {
@@ -31,21 +33,66 @@ public class CreateMealPlan {
         String[] timeOptions = {"Breakfast", "Lunch", "Dinner"};
         txtTime = new JComboBox<String>(timeOptions);
 
+        lblRecipeIndex = new JLabel("Choose Recipe : ");
+        String[] names = new String[newRecipes.size()];
+        int i = 0;
+        for (Recipe r: newRecipes.list) {
+            names[i] = r.name;
+            i++;
+        }
+
+        txtRecipeIndex = new JComboBox<String>(names);
+
+
         topPanel.add(lblDate);
         topPanel.add(txtDate);
         topPanel.add(lblTime);
         topPanel.add(txtTime);
+        topPanel.add(lblRecipeIndex);
+        topPanel.add(txtRecipeIndex);
 
         SpringLayout layout = new SpringLayout();
         topPanel.setLayout(layout);
         SpringUtilities.makeCompactGrid(topPanel,
-                                        2, 2,  // row, cols
+                                        3, 2,  // row, cols
                                         5, 5,
                                         5, 5);
 
         FlowLayout flowLayout = new FlowLayout();
         bottomPanel = new JPanel();
         bottomPanel.setLayout(flowLayout);
+
+        btnSave = new JButton("Save");
+
+        btnSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                newPlans.amealPlan(txtDate.getText(), txtTime.getSelectedIndex(), txtRecipeIndex.getSelectedIndex());
+                try {
+                    FileOutputStream fileOut = new FileOutputStream("plans.ser");
+                    ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                    out.writeObject(newPlans);
+                    out.close();
+                    fileOut.close();
+                    System.out.println("New Plan for " + txtDate.getText() + " data saved in plans.ser");
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
+                    ex.printStackTrace();
+                }
+                txtDate.setText("");
+            }
+        });
+
+        JButton btnClose = new JButton("Close");
+
+        btnClose.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.setVisible(false);
+            }
+        });
+
+        bottomPanel.add(btnSave);
+        bottomPanel.add(btnClose);
+
 
         mainPanel = new JPanel();
         BoxLayout yBoxLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
@@ -59,26 +106,4 @@ public class CreateMealPlan {
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
-/*
-    private void addActionListeners(final Recipes newRecipes, final Plans newPlans) {
-        btnAdd.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                add(newRecipes, newPlans);
-            }
-        });
-
-        btnReset.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                reset();
-            }
-        });
-
-        btnClose.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                close();
-            }
-        });
-    }
-*/
-
 }
